@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ban Appeal</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: white;
+
+            /* WEBSITE BACKGROUND */
+            background:
+                radial-gradient(circle at 20% 20%, #263b80 0%, transparent 30%),
+                radial-gradient(circle at 80% 80%, #422060 0%, transparent 30%),
+                #0b0e14;
+
+            padding: 40px 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            margin: auto;
+
+            background: rgba(20, 24, 34, 0.95);
+            border: 1px solid #303746;
+            border-radius: 15px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 15px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .description {
+            text-align: center;
+            color: #a9afbd;
+            margin: 10px 0 30px;
+            line-height: 1.5;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 13px;
+
+            background: #171b25;
+            color: white;
+
+            border: 1px solid #303746;
+            border-radius: 8px;
+
+            outline: none;
+            font-size: 14px;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #5865f2;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+
+            margin-top: 30px;
+            padding: 14px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #5865f2;
+            color: white;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #4752c4;
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            background: #3d4350;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+
+        .required {
+            color: #ed4245;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #777f91;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Ban Appeal</h1>
+
+    <p class="description">
+        Think your ban was unfair?
+        Submit an appeal below and our staff team will review it.
+    </p>
+
+
+    <form id="appealForm">
+
+
+        <!-- QUESTION 1 -->
+
+        <label>
+            Username <span class="required">*</span>
+        </label>
+
+        <input
+            type="text"
+            id="username"
+            placeholder="Enter your username"
+            required
+        >
+
+
+        <!-- QUESTION 2 -->
+
+        <label>
+            Discord Username / ID <span class="required">*</span>
+        </label>
+
+        <input
+            type="text"
+            id="discord"
+            placeholder="Example: username or 123456789"
+            required
+        >
+
+
+        <!-- QUESTION 3 -->
+
+        <label>
+            Reason for Ban <span class="required">*</span>
+        </label>
+
+        <textarea
+            id="banReason"
+            placeholder="What were you banned for?"
+            required
+        ></textarea>
+
+
+        <!-- QUESTION 4 -->
+
+        <label>
+            What happened? <span class="required">*</span>
+        </label>
+
+        <textarea
+            id="whatHappened"
+            placeholder="Explain what happened before and during the situation."
+            required
+        ></textarea>
+
+
+        <!-- QUESTION 5 -->
+
+        <label>
+            Why do you believe your ban should be removed?
+            <span class="required">*</span>
+        </label>
+
+        <textarea
+            id="appealReason"
+            placeholder="Explain why you believe you should be unbanned."
+            required
+        ></textarea>
+
+
+        <!-- QUESTION 6 -->
+
+        <label>
+            Do you have any evidence or proof?
+        </label>
+
+        <textarea
+            id="evidence"
+            placeholder="Paste links to screenshots, videos, or other evidence."
+        ></textarea>
+
+
+        <!-- QUESTION 7 -->
+
+        <label>
+            Additional Information
+        </label>
+
+        <textarea
+            id="additional"
+            placeholder="Anything else you want the staff team to know?"
+        ></textarea>
+
+
+        <button type="submit" id="submitButton">
+            Submit Appeal
+        </button>
+
+
+        <p id="message"></p>
+
+    </form>
+
+
+    <div class="footer">
+        Ban Appeal System
+    </div>
+
+</div>
+
+
+<script>
+
+
+    // ==========================================
+    // PUT YOUR DISCORD WEBHOOK HERE
+    // ==========================================
+
+    const WEBHOOK_URL = "https://discord.com/api/webhooks/1556198441950904372/CeXxpazI-AR9lRUSWNCahjr2b-iP7FeDrhuWwnt28s3ZGkH4YylcXpetzMy6BzDKVYK1";
+
+
+    // ==========================================
+    // FORM
+    // ==========================================
+
+    const form = document.getElementById("appealForm");
+
+    const button =
+        document.getElementById("submitButton");
+
+    const message =
+        document.getElementById("message");
+
+
+    form.addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+
+        button.disabled = true;
+
+        button.textContent = "Submitting...";
+
+
+        // Get answers
+
+        const username =
+            document.getElementById("username").value;
+
+        const discord =
+            document.getElementById("discord").value;
+
+        const banReason =
+            document.getElementById("banReason").value;
+
+        const whatHappened =
+            document.getElementById("whatHappened").value;
+
+        const appealReason =
+            document.getElementById("appealReason").value;
+
+        const evidence =
+            document.getElementById("evidence").value;
+
+        const additional =
+            document.getElementById("additional").value;
+
+
+        // ==========================================
+        // DISCORD EMBED
+        // ==========================================
+
+        const webhookData = {
+
+            username: "Ban Appeal System",
+
+            embeds: [
+
+                {
+
+                    title: "New Ban Appeal",
+
+                    color: 5793266,
+
+                    fields: [
+
+                        {
+                            name: "Username",
+                            value: username || "Not provided",
+                            inline: true
+                        },
+
+                        {
+                            name: "Discord Username / ID",
+                            value: discord || "Not provided",
+                            inline: true
+                        },
+
+                        {
+                            name: "Reason for Ban",
+                            value: banReason || "Not provided"
+                        },
+
+                        {
+                            name: "What happened?",
+                            value: whatHappened || "Not provided"
+                        },
+
+                        {
+                            name: "Why should the ban be removed?",
+                            value: appealReason || "Not provided"
+                        },
+
+                        {
+                            name: "Evidence / Proof",
+                            value: evidence || "None provided"
+                        },
+
+                        {
+                            name: "Additional Information",
+                            value: additional || "None provided"
+                        }
+
+                    ],
+
+                    footer: {
+                        text: "Ban Appeal System"
+                    },
+
+                    timestamp:
+                        new Date().toISOString()
+
+                }
+
+            ]
+
+        };
+
+
+        // ==========================================
+        // SEND TO DISCORD
+        // ==========================================
+
+        try {
+
+            const response = await fetch(
+                WEBHOOK_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(webhookData)
+                }
+            );
+
+
+            if (!response.ok) {
+                throw new Error(
+                    "Webhook request failed"
+                );
+            }
+
+
+            message.style.color = "#57f287";
+
+            message.textContent =
+                "Your appeal has been submitted successfully!";
+
+
+            form.reset();
+
+        }
+
+
+        catch (error) {
+
+            console.error(error);
+
+            message.style.color = "#ed4245";
+
+            message.textContent =
+                "Something went wrong. Please try again later.";
+
+        }
+
+
+        finally {
+
+            button.disabled = false;
+
+            button.textContent =
+                "Submit Appeal";
+
+        }
+
+    });
+
+</script>
+
+</body>
+  </html>
